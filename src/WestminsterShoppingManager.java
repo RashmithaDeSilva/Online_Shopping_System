@@ -167,9 +167,13 @@ public class WestminsterShoppingManager implements ShoppingManager {
             System.out.println("\t\tAdd a new product\n");
             System.out.println("\t1. Electronics");
             System.out.println("\t2. Clothing");
-            System.out.println("\t3. Back to main menu");
+            System.out.println("\t0. Back to main menu");
 
             switch (getIntInput("\nSelect > ")) {
+                case 0:
+                    loopbreak = false;
+                    break;
+
                 case 1:
                     electronics = new Electronics(getProductDetails() ,null, null);
                     electronics.setBrand(getStrInput("Brand > "));
@@ -212,10 +216,6 @@ public class WestminsterShoppingManager implements ShoppingManager {
                     System.out.println("Successfully add Clothing product");
                     break;
 
-                case 3:
-                    loopbreak = false;
-                    break;
-
                 default:
                     System.out.println("Invalid input try again !");
                     break;
@@ -224,6 +224,8 @@ public class WestminsterShoppingManager implements ShoppingManager {
             System.out.println("\n");
         }
     }
+
+
 
     private int mainMenu() {
         System.out.println("********************************************************");
@@ -248,6 +250,7 @@ public class WestminsterShoppingManager implements ShoppingManager {
                    break;
 
                case 2:
+                   
                    break;
 
                case 3:
