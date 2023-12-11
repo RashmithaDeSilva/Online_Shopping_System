@@ -10,6 +10,15 @@ public class Electronics extends Product {
     public Electronics() {
     }
 
+    public Electronics(Product product, String brand, Date warranty) {
+        super.setProductId(product.getProductId());
+        super.setProductName(product.getProductName());
+        super.setAvailableItems(product.getAvailableItems());
+        super.setPrice(product.getPrice());
+        this.brand = brand;
+        this.warranty = warranty;
+    }
+
     public Electronics(String productId, String productName, int availableItems, double price, String brand, Date warranty) {
         super(productId, productName, availableItems, price);
         this.brand = brand;
