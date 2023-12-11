@@ -189,9 +189,27 @@ public class WestminsterShoppingManager implements ShoppingManager {
                     }
 
                     productList.add(electronics);
+                    System.out.println("Successfully add Electronic product");
                     break;
 
                 case 2:
+                    clothing = new Clothing(getProductDetails() ,0, null);
+
+                    while (true) {
+                        double size = getDoubleInput("Size > ");
+                        if(size > 0) {
+                            clothing.setSize(size);
+                            break;
+
+                        } else {
+                            System.out.println("Invalid input. try again !\n");
+                        }
+                    }
+
+                    clothing.setColour(getStrInput("Colour > "));
+
+                    productList.add(clothing);
+                    System.out.println("Successfully add Clothing product");
                     break;
 
                 case 3:

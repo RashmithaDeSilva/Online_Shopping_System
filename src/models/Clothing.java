@@ -14,6 +14,15 @@ public class Clothing extends Product {
         this.colour = colour;
     }
 
+    public Clothing(Product product, double size, String colour) {
+        super.setProductId(product.getProductId());
+        super.setProductName(product.getProductName());
+        super.setAvailableItems(product.getAvailableItems());
+        super.setPrice(product.getPrice());
+        this.size = size;
+        this.colour = colour;
+    }
+
 
     public double getSize() {
         return size;
