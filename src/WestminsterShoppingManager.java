@@ -1,3 +1,4 @@
+import models.Clothing;
 import models.Electronics;
 import models.Product;
 import models.ShoppingManager;
@@ -5,7 +6,10 @@ import models.ShoppingManager;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Scanner;
 
 public class WestminsterShoppingManager implements ShoppingManager {
@@ -42,8 +46,20 @@ public class WestminsterShoppingManager implements ShoppingManager {
 
 
     private String getStrInput(String txt) {
-        System.out.print(txt);
-        return scanner.nextLine();
+        String input;
+
+        while (true) {
+            System.out.print(txt);
+            input = scanner.nextLine();
+
+            if(!input.isEmpty()) {
+                break;
+            } else {
+                System.out.println("Invalid input try again !");
+            }
+        }
+
+        return input;
     }
 
     private int getIntInput(String txt) {
@@ -112,17 +128,7 @@ public class WestminsterShoppingManager implements ShoppingManager {
 
         }
 
-        loopbreak = -1;
-        while (loopbreak != 0) {
-            name = getStrInput("Product name > ");
-            
-            if (!name.isEmpty()) {
-                loopbreak = 0;
-                
-            } else {
-                System.out.println("This Name is invade, try again !\n");
-            }
-        }
+        name = getStrInput("Product name > ");
 
         loopbreak = -1;
         while (loopbreak != 0) {
@@ -152,7 +158,8 @@ public class WestminsterShoppingManager implements ShoppingManager {
     }
 
     private void addNewProduct() {
-        Product product;
+        Electronics electronics;
+        Clothing clothing;
         boolean loopbreak = true;
 
         while (loopbreak) {
@@ -164,8 +171,24 @@ public class WestminsterShoppingManager implements ShoppingManager {
 
             switch (getIntInput("\nSelect > ")) {
                 case 1:
-                    product = new Electronics(getProductDetails() ,null, null);
+                    electronics = new Electronics(getProductDetails() ,null, null);
+                    electronics.setBrand(getStrInput("Brand > "));
 
+                    // Validate the input format if needed
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    dateFormat.setLenient(false);
+
+                    while (true) {
+                        try {
+                            electronics.setWarranty(dateFormat.parse(getStrInput("Warranty date > ")));
+                            break;
+
+                        } catch (ParseException e) {
+                            System.out.println("Invalid date. Please enter in the format YYYY-MM-DD !\n");
+                        }
+                    }
+
+                    productList.add(electronics);
                     break;
 
                 case 2:
