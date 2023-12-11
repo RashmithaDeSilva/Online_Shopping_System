@@ -58,7 +58,6 @@ public class WestminsterShoppingManager implements ShoppingManager {
 
             } catch (Exception e) {
                 System.out.println("invade input data type, try again with integer !");
-                validInput = true;
             }
         }
 
@@ -139,7 +138,7 @@ public class WestminsterShoppingManager implements ShoppingManager {
 
         loopbreak = -1;
         while (loopbreak != 0) {
-            price = getIntInput("Price (per item) > ");
+            price = getDoubleInput("Price (per item) > ");
 
             if (price > 0) {
                 loopbreak = 0;
