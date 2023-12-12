@@ -303,6 +303,16 @@ public class WestminsterShoppingManager implements ShoppingManager {
 
     }
 
+    private void saveProductListIntoFile() {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("Data.txt"))) {
+            oos.writeObject(productList);
+            System.out.println("Successfully save data into file: Data.txt");
+
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+    }
+
     private int mainMenu() {
         System.out.println("********************************************************");
         System.out.println("\t\tOnline Shopping System\n");
@@ -337,6 +347,7 @@ public class WestminsterShoppingManager implements ShoppingManager {
                    break;
 
                case 4:
+                   saveProductListIntoFile();
                    break;
 
                default:

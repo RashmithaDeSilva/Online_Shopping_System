@@ -1,6 +1,8 @@
 package models;
 
-public class Product {
+import java.io.Serializable;
+
+public class Product implements Serializable {
     private String productId;
     private String productName;
     private int availableItems;
@@ -48,5 +50,16 @@ public class Product {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "productId='" + productId + '\'' +
+                ", productName='" + productName + '\'' +
+                ", availableItems=" + availableItems +
+                ", price=" + price +
+                '}';
     }
 }

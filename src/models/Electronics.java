@@ -41,4 +41,17 @@ public class Electronics extends Product {
     public void setWarranty(Date warranty) {
         this.warranty = warranty;
     }
+
+
+    @Override
+    public String toString() {
+        return "Electronics{" +
+                "productId='" + super.getProductId() + '\'' +
+                ", productName='" + super.getProductName() + '\'' +
+                ", availableItems=" + super.getAvailableItems() +
+                ", price=" + super.getPrice() +
+                "brand='" + brand + '\'' +
+                ", warranty=" + warranty +
+                '}';
+    }
 }

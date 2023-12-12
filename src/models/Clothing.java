@@ -39,4 +39,17 @@ public class Clothing extends Product {
     public void setColour(String colour) {
         this.colour = colour;
     }
+
+
+    @Override
+    public String toString() {
+        return "Clothing{" +
+                "productId='" + super.getProductId() + '\'' +
+                ", productName='" + super.getProductName() + '\'' +
+                ", availableItems=" + super.getAvailableItems() +
+                ", price=" + super.getPrice() +
+                "size=" + size +
+                ", colour='" + colour + '\'' +
+                '}';
+    }
 }
