@@ -8,9 +8,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Scanner;
+import java.util.*;
 
 public class WestminsterShoppingManager implements ShoppingManager {
     private static final Scanner scanner = new Scanner(System.in);
@@ -225,7 +223,85 @@ public class WestminsterShoppingManager implements ShoppingManager {
         }
     }
 
+    private void showProductAlphabetically(ArrayList<Product> tempProductList) throws ParseException {
+        tempProductList.sort(Comparator.comparing(Product::getProductId));
 
+        for (int i=0;i<172;i++) {
+            System.out.print("*");
+        }
+        System.out.printf("\n| %-15s | %-15s | %-30s | %-18s | %-8s | %-8s | %-15s | %-20s | %-15s |\n",
+                "Product ID", "Product", "Product name", "Available items", "Price", "Size",
+                "Colour", "Brand", "Warranty");
+        for (int i=0;i<172;i++) {
+            System.out.print("*");
+        }
+        for (Product p : tempProductList) {
+            System.out.println();
+            if (p.getClass().getName().substring(p.getClass().getName().
+                    lastIndexOf('.')+1).equalsIgnoreCase("electronics")) {
+                Electronics e = (Electronics) p;
+                System.out.printf("| %-15s | %-15s | %-30s | %-18s | %-8s | %-8s | %-15s | %-20s | %-15s |",
+                        p.getProductId(), "Electronics", p.getProductName(), String.valueOf(p.getAvailableItems()),
+                        String.valueOf(p.getPrice()), "   --   ", "      ---      ",
+                        e.getBrand(), new SimpleDateFormat("yyyy-MM-dd").
+                                format(new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy", Locale.ENGLISH).
+                                        parse(String.valueOf(e.getWarranty()))));
+
+            } else {
+                Clothing c = (Clothing) p;
+                System.out.printf("| %-15s | %-15s | %-30s | %-18s | %-8s | %-8s | %-15s | %-20s | %-15s |",
+                        p.getProductId(), "Electronics", p.getProductName(), String.valueOf(p.getAvailableItems()),
+                        String.valueOf(p.getPrice()), String.valueOf(c.getSize()), c.getColour(),
+                        "         --         ", "      ---      ");
+            }
+        }
+        System.out.println();
+        for (int i=0;i<172;i++) {
+            System.out.print("*");
+        }
+        System.out.println();
+    }
+
+    private void deleteProduct() throws ParseException {
+        boolean loopBreak = true;
+
+        while (loopBreak) {
+            System.out.println("********************************************************");
+            System.out.println("\t\tDelete a product\n");
+            System.out.println("\t0. Back to main menu\n");
+
+            String id = getStrInput("Product ID > ");
+
+            if(id.equalsIgnoreCase("0")) {
+                break;
+
+            } else {
+                boolean available = false;
+
+                for (Product p : productList) {
+                    if (p.getProductId().equalsIgnoreCase(id.toLowerCase())) {
+
+                        showProductAlphabetically(new ArrayList<>(List.of(p)));
+
+                        if ("y".equalsIgnoreCase(getStrInput(
+                                "Are you sure you want to delete this product (y/n) ? > "))) {
+                            productList.remove(p);
+                            System.out.println();
+                        }
+
+                        available = true;
+                        break;
+                    }
+                }
+
+                if (!available) {
+                    System.out.println("Invade ID number, try again !\n");
+                }
+            }
+        }
+
+
+    }
 
     private int mainMenu() {
         System.out.println("********************************************************");
@@ -234,10 +310,11 @@ public class WestminsterShoppingManager implements ShoppingManager {
         System.out.println("\t2. Delete a product");
         System.out.println("\t3. Print the list of the products");
         System.out.println("\t4. Save in a file");
+        System.out.println("\t5. Open GUI");
         System.out.println("\t0. Exit");
         return getIntInput("\nSelect > ");
     }
-    public void startConsoleMenu() {
+    public void startConsoleMenu() throws ParseException {
         boolean loopbreak = true;
         while (loopbreak) {
            switch (mainMenu()) {
@@ -250,7 +327,7 @@ public class WestminsterShoppingManager implements ShoppingManager {
                    break;
 
                case 2:
-                   
+                   deleteProduct();
                    break;
 
                case 3:
@@ -267,9 +344,29 @@ public class WestminsterShoppingManager implements ShoppingManager {
         }
     }
 
+    public void addproduct() throws ParseException {
+        productList.add(new Electronics("1", "aaaaa", 100, 50,
+                "djhhsjdh", new SimpleDateFormat("yyyy-MM-dd").parse("2023-09-09")));
+        productList.add(new Electronics("2", "aaaaa", 100, 50,
+                "djhhsjdh", new SimpleDateFormat("yyyy-MM-dd").parse("2023-09-09")));
+        productList.add(new Clothing("3", "aaaaa", 100, 50,
+                25, "dssdsd"));
+        productList.add(new Electronics("4", "aaaaa", 100, 50,
+                "djhhsjdh", new SimpleDateFormat("yyyy-MM-dd").parse("2023-09-09")));
+        productList.add(new Clothing("5", "aaaaa", 100, 50,
+                25, "hcbjsdb"));
+
+
+    }
     public static void main(String[] args) {
         WestminsterShoppingManager wsm = new WestminsterShoppingManager();
 
-        wsm.startConsoleMenu();
+       try {
+           wsm.addproduct();
+           wsm.startConsoleMenu();
+
+       } catch (Exception e) {
+           System.out.println(e.getMessage());
+       }
     }
 }
