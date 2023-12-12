@@ -4,15 +4,20 @@ import models.Product;
 import models.ShoppingManager;
 
 import java.io.FileOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.io.ObjectInputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class WestminsterShoppingManager implements ShoppingManager {
     private static final Scanner scanner = new Scanner(System.in);
-    private final ArrayList<Product> productList;
+    private ArrayList<Product> productList;
 
 
     public WestminsterShoppingManager() {
@@ -304,13 +309,33 @@ public class WestminsterShoppingManager implements ShoppingManager {
     }
 
     private void saveProductListIntoFile() {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("Data.txt"))) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("Data.dat"))) {
             oos.writeObject(productList);
-            System.out.println("Successfully save data into file: Data.txt");
+            System.out.println("Successfully save data into file: Data.dat");
 
         } catch (IOException e) {
             System.out.println(e);
         }
+    }
+
+    private void loadProductListDataFromFile() {
+        ArrayList<Product> list = new ArrayList<>();
+
+        if (Files.exists(Paths.get("Data.dat"))) {
+            try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("Data.dat"))) {
+                Object obj = ois.readObject();
+                if (obj instanceof ArrayList) {
+                    productList = (ArrayList<Product>) obj;
+                    System.out.println("Successfully loaded data from file: Data.dat");
+                }
+            } catch (IOException | ClassNotFoundException e) {
+                System.out.println("Error loading product list: " + e.getMessage());
+            }
+        } else {
+            System.out.println("File 'Data.dat' does not exist in the current working directory. No data loaded.");
+        }
+
+        productList = list;
     }
 
     private int mainMenu() {
@@ -326,6 +351,9 @@ public class WestminsterShoppingManager implements ShoppingManager {
     }
 
     public void startConsoleMenu() throws ParseException {
+        loadProductListDataFromFile();
+//        addproduct();
+
         boolean loopbreak = true;
         while (loopbreak) {
            switch (mainMenu()) {
@@ -376,7 +404,6 @@ public class WestminsterShoppingManager implements ShoppingManager {
         WestminsterShoppingManager wsm = new WestminsterShoppingManager();
 
        try {
-           wsm.addproduct();
            wsm.startConsoleMenu();
 
        } catch (Exception e) {
