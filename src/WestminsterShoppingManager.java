@@ -250,7 +250,7 @@ public class WestminsterShoppingManager implements ShoppingManager {
             } else {
                 Clothing c = (Clothing) p;
                 System.out.printf("| %-15s | %-15s | %-30s | %-18s | %-8s | %-8s | %-15s | %-20s | %-15s |",
-                        p.getProductId(), "Electronics", p.getProductName(), String.valueOf(p.getAvailableItems()),
+                        p.getProductId(), "Clothing", p.getProductName(), String.valueOf(p.getAvailableItems()),
                         String.valueOf(p.getPrice()), String.valueOf(c.getSize()), c.getColour(),
                         "         --         ", "      ---      ");
             }
@@ -314,6 +314,7 @@ public class WestminsterShoppingManager implements ShoppingManager {
         System.out.println("\t0. Exit");
         return getIntInput("\nSelect > ");
     }
+
     public void startConsoleMenu() throws ParseException {
         boolean loopbreak = true;
         while (loopbreak) {
@@ -331,6 +332,8 @@ public class WestminsterShoppingManager implements ShoppingManager {
                    break;
 
                case 3:
+                   System.out.println();
+                   showProductAlphabetically(productList);
                    break;
 
                case 4:
@@ -345,15 +348,15 @@ public class WestminsterShoppingManager implements ShoppingManager {
     }
 
     public void addproduct() throws ParseException {
-        productList.add(new Electronics("1", "aaaaa", 100, 50,
+        productList.add(new Electronics("4", "aaaaa", 100, 50,
                 "djhhsjdh", new SimpleDateFormat("yyyy-MM-dd").parse("2023-09-09")));
         productList.add(new Electronics("2", "aaaaa", 100, 50,
                 "djhhsjdh", new SimpleDateFormat("yyyy-MM-dd").parse("2023-09-09")));
-        productList.add(new Clothing("3", "aaaaa", 100, 50,
+        productList.add(new Clothing("1", "aaaaa", 100, 50,
                 25, "dssdsd"));
-        productList.add(new Electronics("4", "aaaaa", 100, 50,
+        productList.add(new Electronics("5", "aaaaa", 100, 50,
                 "djhhsjdh", new SimpleDateFormat("yyyy-MM-dd").parse("2023-09-09")));
-        productList.add(new Clothing("5", "aaaaa", 100, 50,
+        productList.add(new Clothing("3", "aaaaa", 100, 50,
                 25, "hcbjsdb"));
 
 
