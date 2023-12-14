@@ -1,6 +1,8 @@
 package models;
 
-public class Clothing extends Product {
+import java.io.Serializable;
+
+public class Clothing extends Product implements Serializable {
     private double size;
     private String colour;
 
@@ -48,7 +50,7 @@ public class Clothing extends Product {
                 ", productName='" + super.getProductName() + '\'' +
                 ", availableItems=" + super.getAvailableItems() +
                 ", price=" + super.getPrice() +
-                "size=" + size +
+                ", size=" + size +
                 ", colour='" + colour + '\'' +
                 '}';
     }

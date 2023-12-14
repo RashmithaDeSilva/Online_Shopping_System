@@ -319,8 +319,6 @@ public class WestminsterShoppingManager implements ShoppingManager {
     }
 
     private void loadProductListDataFromFile() {
-        ArrayList<Product> list = new ArrayList<>();
-
         if (Files.exists(Paths.get("Data.dat"))) {
             try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("Data.dat"))) {
                 Object obj = ois.readObject();
@@ -334,8 +332,6 @@ public class WestminsterShoppingManager implements ShoppingManager {
         } else {
             System.out.println("File 'Data.dat' does not exist in the current working directory. No data loaded.");
         }
-
-        productList = list;
     }
 
     private int mainMenu() {

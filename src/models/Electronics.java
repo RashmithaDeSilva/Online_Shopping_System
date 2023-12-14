@@ -1,8 +1,9 @@
 package models;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Electronics extends Product {
+public class Electronics extends Product implements Serializable {
     private String brand;
     private Date warranty;
 
@@ -50,7 +51,7 @@ public class Electronics extends Product {
                 ", productName='" + super.getProductName() + '\'' +
                 ", availableItems=" + super.getAvailableItems() +
                 ", price=" + super.getPrice() +
-                "brand='" + brand + '\'' +
+                ", brand='" + brand + '\'' +
                 ", warranty=" + warranty +
                 '}';
     }
