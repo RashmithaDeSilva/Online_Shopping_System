@@ -2,6 +2,7 @@ import models.Clothing;
 import models.Electronics;
 import models.Product;
 import models.ShoppingManager;
+import view.WestminsterShoppingCenter;
 
 import java.io.FileOutputStream;
 import java.io.FileInputStream;
@@ -9,7 +10,6 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.ObjectInputStream;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -17,11 +17,11 @@ import java.util.*;
 
 public class WestminsterShoppingManager implements ShoppingManager {
     private static final Scanner scanner = new Scanner(System.in);
-    private ArrayList<Product> productList;
+    private static ArrayList<Product> productList;
 
 
     public WestminsterShoppingManager() {
-        this.productList = new ArrayList<>();
+        productList = new ArrayList<>();
     }
 
 
@@ -95,7 +95,6 @@ public class WestminsterShoppingManager implements ShoppingManager {
 
             } catch (Exception e) {
                 System.out.println("invade input data type, try again with float !");
-                validInput = true;
             }
         }
 
@@ -372,6 +371,10 @@ public class WestminsterShoppingManager implements ShoppingManager {
 
                case 4:
                    saveProductListIntoFile();
+                   break;
+
+               case 5:
+                   new WestminsterShoppingCenter().setVisible(true);
                    break;
 
                default:
