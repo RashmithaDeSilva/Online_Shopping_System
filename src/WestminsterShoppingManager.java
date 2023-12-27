@@ -21,9 +21,10 @@ public class WestminsterShoppingManager implements ShoppingManager {
 
 
     public WestminsterShoppingManager() {
-        productList = new ArrayList<>();
+        if(productList == null || productList.isEmpty()) {
+            productList = new ArrayList<>();
+        }
     }
-
 
     @Override
     public void addItem(Product product) {
@@ -333,6 +334,10 @@ public class WestminsterShoppingManager implements ShoppingManager {
         }
     }
 
+    public ArrayList<Product> getProductList() {
+        return productList;
+    }
+
     private int mainMenu() {
         System.out.println("********************************************************");
         System.out.println("\t\tOnline Shopping System\n");
@@ -399,6 +404,7 @@ public class WestminsterShoppingManager implements ShoppingManager {
 
 
     }
+
     public static void main(String[] args) {
         WestminsterShoppingManager wsm = new WestminsterShoppingManager();
 
