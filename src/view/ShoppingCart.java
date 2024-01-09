@@ -14,7 +14,7 @@ public class ShoppingCart extends JFrame {
 
     public ShoppingCart(ArrayList<Product> productCartList) {
         // Set Window
-        setWindow(700,420,"Shopping Cart");
+        setWindow(700,480,"Shopping Cart");
 
         // Set Body
         try {

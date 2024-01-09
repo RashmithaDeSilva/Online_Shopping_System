@@ -1,7 +1,4 @@
-import models.Clothing;
-import models.Electronics;
-import models.Product;
-import models.ShoppingManager;
+import models.*;
 import view.WestminsterShoppingCenter;
 
 import java.io.FileOutputStream;
@@ -18,13 +15,22 @@ import java.util.*;
 public class WestminsterShoppingManager implements ShoppingManager {
     private static final Scanner scanner = new Scanner(System.in);
     private static ArrayList<Product> productList;
+    private static ArrayList<User> userList;
 
 
     public WestminsterShoppingManager() {
         if(productList == null || productList.isEmpty()) {
             productList = new ArrayList<>();
         }
+
+        if(userList == null || userList.isEmpty()) {
+            userList = new ArrayList<>();
+        }
     }
+
+//    public WestminsterShoppingManager(){
+//
+//    }
 
     @Override
     public void addItem(Product product) {
@@ -42,10 +48,9 @@ public class WestminsterShoppingManager implements ShoppingManager {
     }
 
     @Override
-    public void saveInFile() throws IOException {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("productListData.txt"))) {
-            oos.writeObject(productList);
-        }
+    public void saveInFile() {
+        saveProductListIntoFile("productListData");
+        saveProductListIntoFile("userListData");
     }
 
 
@@ -156,7 +161,7 @@ public class WestminsterShoppingManager implements ShoppingManager {
                 System.out.println("Invade price, try again !\n");
             }
         }
-        
+
         return new Product(id, name, itemCount, price);
     }
 
@@ -308,34 +313,45 @@ public class WestminsterShoppingManager implements ShoppingManager {
 
     }
 
-    private void saveProductListIntoFile() {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("Data.dat"))) {
+    private void saveProductListIntoFile(String saveFileName) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(saveFileName + ".dat"))) {
             oos.writeObject(productList);
-            System.out.println("Successfully save data into file: Data.dat");
+            System.out.println("Successfully save data into file: " + saveFileName +".dat");
 
         } catch (IOException e) {
             System.out.println(e);
         }
     }
 
-    private void loadProductListDataFromFile() {
-        if (Files.exists(Paths.get("Data.dat"))) {
-            try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("Data.dat"))) {
+    private void loadProductListDataFromFile(String saveFileName) {
+        if (Files.exists(Paths.get(saveFileName + ".dat"))) {
+            try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(saveFileName + ".dat"))) {
                 Object obj = ois.readObject();
                 if (obj instanceof ArrayList) {
-                    productList = (ArrayList<Product>) obj;
-                    System.out.println("Successfully loaded data from file: Data.dat");
+                    if(saveFileName.equalsIgnoreCase("productlistdata")) {
+                        productList = (ArrayList<Product>) obj;
+
+                    } else {
+                        userList = (ArrayList<User>) obj;
+                    }
+
+                    System.out.println("Successfully loaded data from file: " + saveFileName + ".dat");
                 }
             } catch (IOException | ClassNotFoundException e) {
                 System.out.println("Error loading product list: " + e.getMessage());
             }
         } else {
-            System.out.println("File 'Data.dat' does not exist in the current working directory. No data loaded.");
+            System.out.println("File '" + saveFileName + ".dat' does not exist in the current working directory. " +
+                    "No data loaded.");
         }
     }
 
     public ArrayList<Product> getProductList() {
         return productList;
+    }
+
+    public ArrayList<User> getUserList() {
+        return userList;
     }
 
     private int mainMenu() {
@@ -351,7 +367,8 @@ public class WestminsterShoppingManager implements ShoppingManager {
     }
 
     public void startConsoleMenu() throws ParseException {
-        loadProductListDataFromFile();
+        loadProductListDataFromFile("productListData");
+        loadProductListDataFromFile("userListData");
 //        addproduct();
 
         boolean loopbreak = true;
@@ -375,10 +392,11 @@ public class WestminsterShoppingManager implements ShoppingManager {
                    break;
 
                case 4:
-                   saveProductListIntoFile();
+                   saveInFile();
                    break;
 
                case 5:
+                   new LoginOrSingInPage().setVisible(true);
                    new WestminsterShoppingCenter(productList).setVisible(true);
                    break;
 
