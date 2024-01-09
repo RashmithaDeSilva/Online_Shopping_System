@@ -233,6 +233,11 @@ public class WestminsterShoppingManager implements ShoppingManager {
         }
     }
 
+    public void addNewUser(User user) {
+        userList.add(user);
+        saveProductListIntoFile("userListData");
+    }
+
     private void showProductAlphabetically(ArrayList<Product> tempProductList) throws ParseException {
         tempProductList.sort(Comparator.comparing(Product::getProductId));
 
@@ -315,7 +320,11 @@ public class WestminsterShoppingManager implements ShoppingManager {
 
     private void saveProductListIntoFile(String saveFileName) {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(saveFileName + ".dat"))) {
-            oos.writeObject(productList);
+            if(saveFileName.equalsIgnoreCase("productlistdata")) {
+                oos.writeObject(productList);
+            } else {
+                oos.writeObject(userList);
+            }
             System.out.println("Successfully save data into file: " + saveFileName +".dat");
 
         } catch (IOException e) {
@@ -433,4 +442,5 @@ public class WestminsterShoppingManager implements ShoppingManager {
            System.out.println(e.getMessage());
        }
     }
+
 }

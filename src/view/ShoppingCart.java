@@ -47,8 +47,6 @@ public class ShoppingCart extends JFrame {
         JLabel jLabel7 = new JLabel();
         JLabel jLabel8 = new JLabel();
 
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-
         jTable1.setModel(new DefaultTableModel(
                 new Object [][] {
                         {null, null, null},
