@@ -67,7 +67,7 @@ public class ShoppingCart extends JFrame {
 
         jLabel3.setText("Three Items in Same Category Discount (20%)");
 
-        jLabel4.setText("Finel Total");
+        jLabel4.setText("Final Total");
 
         jLabel5.setText("jLabel5");
 

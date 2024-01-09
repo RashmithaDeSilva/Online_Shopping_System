@@ -143,7 +143,7 @@ public class LoginOrSingInPage extends JFrame {
                 for (User u : wsm.getUserList()) {
                     if(!u.getUserName().equalsIgnoreCase(name.toLowerCase())) {
                         if(pass.equalsIgnoreCase(conPass.toLowerCase())) {
-                            wsm.addNewUser(new User(name, pass));
+                            wsm.addNewUser(new User(name, pass, false));
                             showMessageDialog("Information", "Successfully sing in you... " +
                                     "\nNow try to login");
 
@@ -158,7 +158,7 @@ public class LoginOrSingInPage extends JFrame {
 
             } else {
                 if(pass.equalsIgnoreCase(conPass.toLowerCase())) {
-                    wsm.addNewUser(new User(name, pass));
+                    wsm.addNewUser(new User(name, pass, false));
                     newUnameTxt.setText("");
                     newPwordTxt.setText("");
                     conformPwordTxt.setText("");
