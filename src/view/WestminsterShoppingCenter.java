@@ -18,9 +18,11 @@ import java.util.Vector;
 
 public class WestminsterShoppingCenter extends JFrame {
 
+    ArrayList<Product> productCartList = new ArrayList<>();
+
     public WestminsterShoppingCenter(ArrayList<Product> productList) {
         // Set Window
-        setWindow(700,850,"Westminster Skin Consultation Manager");
+        setWindow(700,850,"Westminster Shopping Center");
 
         // Set Body
         try {
@@ -245,7 +247,7 @@ public class WestminsterShoppingCenter extends JFrame {
                 Clothing c = (Clothing) product;
                 productInfo = "Size: " + c.getSize() + "\nColour: " + c.getColour();
             }
-            
+
             Object[] rowData = {
                     product.getProductId(),
                     product.getProductName(),
@@ -272,158 +274,4 @@ public class WestminsterShoppingCenter extends JFrame {
     private void addShoppingCartButtonActionPerformed(ActionEvent evt) {
         // TODO add your handling code here:
     }
-
-//    private void GUIBody(ArrayList<Product> productList) throws ParseException {
-//        JPanel upPanel = new JPanel(new BorderLayout());
-//        JPanel downPanel = new JPanel(new GridLayout(8, 1));
-//
-//        JPanel upPanelTop = new JPanel(new GridLayout(4, 3, 10, 10));
-//        upPanelTop.add(new JLabel(""));
-//        upPanelTop.add(new JLabel(""));
-//        upPanelTop.add(new JLabel(""));
-//
-//        upPanelTop.add(new JLabel(""));
-//        upPanelTop.add(new JLabel(""));
-//        JButton shoppingCartButton = new JButton("Shopping cart");
-//        upPanelTop.add(shoppingCartButton);
-//
-//        JLabel categoryLabel = new JLabel("Select product category");
-//        categoryLabel.setHorizontalAlignment(JLabel.CENTER);
-//        categoryLabel.setVerticalAlignment(JLabel.CENTER);
-//        upPanelTop.add(categoryLabel);
-//        JComboBox<String> category = new JComboBox<>(new String[]{"All", "Electronics", "Clothing"});
-//        upPanelTop.add(category);
-//        upPanelTop.add(new JLabel(""));
-//
-//        upPanelTop.add(new JLabel(""));
-//        upPanelTop.add(new JLabel(""));
-//        upPanelTop.add(new JLabel(""));
-//
-//        category.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                // Handle the event here
-//                JComboBox<String> source = (JComboBox<String>) e.getSource();
-//                String selectedOption = (String) source.getSelectedItem();
-//                System.out.println(selectedOption);
-//            }
-//        });
-//
-//
-//        JPanel upPanelBottom = new JPanel(new GridLayout(4,3));
-//
-////        // Create a JTable with a DefaultTableModel
-////        JTable productTable = new JTable(new DefaultTableModel(
-////                new Object[]{"ID", "Name", "Category", "Price", "Info"}, 0));
-////
-////        // Get the DefaultTableModel from the JTable
-////        DefaultTableModel tableModel = (DefaultTableModel) productTable.getModel();
-////
-////        // Convert ArrayList data to Vector
-////        Vector<Product> rowData = new Vector<>(productList);
-////
-////        // Add the Vector to the DefaultTableModel
-////        tableModel.addRow(rowData);
-////
-////        // Create JScrollPane to hold the table
-////        JScrollPane scrollPane = new JScrollPane(productTable);
-//
-//
-////        String[] columnNames = {"ID", "Name", "Category", "Price", "Info"};
-////        String[][] productArray = new String[productList.size()][columnNames.length];
-////
-////
-////        // Set Doctors Values In To 2D Array
-////        for(int i=0;i<productList.size();i++){
-////            for(int j=0;j<columnNames.length;j++){
-////                if (j == 0) {
-////                    productArray[i][j] = productList.get(i).getProductId();
-////
-////                } else if (j == 1) {
-////                    productArray[i][j] = productList.get(i).getProductName();
-////
-////                } else if (j == 2) {
-////                    productArray[i][j] = productList.get(i).getClass().getName().substring(
-////                            productList.get(i).getClass().getName().lastIndexOf('.')+1).
-////                            equalsIgnoreCase("electronics") ? "Electronics" : "Clothing";
-////
-////                } else if (j == 3) {
-////                    productArray[i][j] = String.valueOf(productList.get(i).getPrice());
-////
-////                } else {
-////                    if (productList.get(i).getClass().getName().substring(productList.get(i).
-////                            getClass().getName().lastIndexOf('.')+1).equalsIgnoreCase("electronics")) {
-////                        Electronics e = (Electronics) productList.get(i);
-////                        productArray[i][j] = "Brand name: " + e.getBrand() + "\nWarranty: " +
-////                                new SimpleDateFormat("yyyy-MM-dd").format(new SimpleDateFormat(
-////                                        "E MMM dd HH:mm:ss z yyyy", Locale.ENGLISH).parse(
-////                                                String.valueOf(e.getWarranty())));
-////                    } else {
-////                        Clothing c = (Clothing) productList.get(i);
-////                        productArray[i][j] = "Size: " + c.getSize() + "\nColour: " + c.getColour();
-////                    }
-////                }
-////            }
-////        }
-////
-////        // Set Table
-////        JTable productTable = new JTable(productArray, columnNames);
-////
-////        // Set Table Data Font
-//////        productTable.setFont(new Font("SansSerif",1,15));
-////
-////        // Set Table Column Font
-//////        productTable.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 15));
-////
-////        // Create JScrollPane to hold the table
-////        JScrollPane scrollPane = new JScrollPane(productTable);
-//
-//        JTable productTable = new JTable();
-//        JScrollPane scrollPane = new JScrollPane();
-//
-//        productTable.setModel(new javax.swing.table.DefaultTableModel(
-//                new Object [][] {
-//                        {null, null, null, null, null},
-//                        {null, null, null, null, null},
-//                        {null, null, null, null, null},
-//                        {null, null, null, null, null}
-//                },
-//                new String [] {"ID", "Name", "Category", "Price", "Info"}
-//        ));
-//        scrollPane.setViewportView(productTable);
-//
-//
-//
-//
-//        upPanelBottom.add(productTable);
-//
-//
-//
-//
-//
-//        upPanel.add(upPanelTop, BorderLayout.NORTH);
-//        upPanel.add(new JLabel("     "), BorderLayout.WEST);
-//        upPanel.add(new JLabel("     "), BorderLayout.EAST);
-//        upPanel.add(upPanelBottom, BorderLayout.CENTER);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//        add(upPanel);
-//        add(downPanel);
-//    }
-
-    // Method to add sample data to the table
-    private void addSampleData(ArrayList<Product> productList) {
-        Vector<Object> rowData = new Vector<>(productList);
-
-    }
-
-
 }
