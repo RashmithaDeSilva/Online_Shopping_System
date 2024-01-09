@@ -1,6 +1,8 @@
 package view;
 
 import models.Product;
+import models.Electronics;
+import models.Clothing;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -8,7 +10,9 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Vector;
 
 
@@ -37,22 +41,24 @@ public class WestminsterShoppingCenter extends JFrame {
     }
 
     private void GUIBody(ArrayList<Product> productList) throws ParseException {
-        JTable productTable = new JTable(new DefaultTableModel(
-                new Object [][] {
-                    {null, null, null, null, null},
-                    {null, null, null, null, null},
-                    {null, null, null, null, null},
-                    {null, null, null, null, null},
-                    {null, null, null, null, null}
-                },
-                new String [] {"ID", "Name", "Category", "Price", "Info"})
-            {
-                final Class[] types = new Class [] { String.class, String.class, String.class, Double.class, String.class };
-                final boolean[] canEdit = new boolean [] { false, false, false, false, false };
-                public Class getColumnClass(int columnIndex) { return types [columnIndex]; }
-                public boolean isCellEditable(int rowIndex, int columnIndex) { return canEdit [columnIndex]; }
-            });
 
+        // Create JTable with the populated table model
+        JTable productTable = new JTable(getTable(productList)) {
+            final Class[] types = new Class[]{String.class, String.class, String.class, Double.class, String.class};
+            final boolean[] canEdit = new boolean[]{false, false, false, false, false};
+
+            @Override
+            public Class getColumnClass(int columnIndex) {
+                return types[columnIndex];
+            }
+
+            @Override
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit[columnIndex];
+            }
+        };
+
+        // Create scroll pane for table
         JScrollPane productScrollPane = new JScrollPane();
         productScrollPane.setViewportView(productTable);
         if (productTable.getColumnModel().getColumnCount() > 0) {
@@ -216,6 +222,43 @@ public class WestminsterShoppingCenter extends JFrame {
                                         .addComponent(addShoppingCartButton))
                                 .addContainerGap(20, Short.MAX_VALUE))
         );
+    }
+
+    private DefaultTableModel getTable(ArrayList<Product> productList) throws ParseException {
+        // Create table model with column names and 0 rows initially
+        DefaultTableModel tableModel = new DefaultTableModel(
+                new String[]{"ID", "Name", "Category", "Price", "Info"}, 0);
+
+        // Populate table model with product data
+        for (Product product : productList) {
+
+            String productInfo;
+
+            if (product.getClass().getName().substring(product.getClass().getName().
+                    lastIndexOf('.')+1).equalsIgnoreCase("electronics")) {
+                Electronics e = (Electronics) product;
+                productInfo = "Brand name: " + e.getBrand() + "\nWarranty: " +
+                        new SimpleDateFormat("yyyy-MM-dd").format(new SimpleDateFormat(
+                                "E MMM dd HH:mm:ss z yyyy", Locale.ENGLISH).parse(
+                                String.valueOf(e.getWarranty())));
+            } else {
+                Clothing c = (Clothing) product;
+                productInfo = "Size: " + c.getSize() + "\nColour: " + c.getColour();
+            }
+            
+            Object[] rowData = {
+                    product.getProductId(),
+                    product.getProductName(),
+                    product.getClass().getName().substring(product.getClass().getName()
+                            .lastIndexOf('.')+1).equalsIgnoreCase("electronics") ?
+                            "Electronics" : "Clothing",
+                    product.getPrice(),
+                    productInfo
+            };
+            tableModel.addRow(rowData);
+        }
+
+        return tableModel;
     }
 
     private void shoppingCartActionPerformed(ActionEvent evt) {
