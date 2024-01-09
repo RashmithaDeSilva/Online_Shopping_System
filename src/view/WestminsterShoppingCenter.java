@@ -9,24 +9,43 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Vector;
 
 
 public class WestminsterShoppingCenter extends JFrame {
 
+    JTable productTable;
+    JComboBox<String> productCategoryComboBox;
+    JLabel productIdShowLabel;
+    JLabel categoryShowLabel;
+    JLabel nameShowLabel;
+    JLabel sizeOrBrandShowLabel;
+    JLabel colourOrWarrantyShowLabel;
+    JLabel availableItemsShowLabel;
+    JLabel sizeOrBrandLabel;
+    JLabel colourOrWarrantyLabel;
+
+
+    ArrayList<Product> productList;
     ArrayList<Product> productCartList = new ArrayList<>();
 
     public WestminsterShoppingCenter(ArrayList<Product> productList) {
+        // Set product list
+        this.productList = productList;
+
         // Set Window
         setWindow(700,850,"Westminster Shopping Center");
 
         // Set Body
         try {
-            GUIBody(productList);
+            GUIBody();
 
         } catch (ParseException e) {
             throw new RuntimeException(e);
@@ -42,10 +61,13 @@ public class WestminsterShoppingCenter extends JFrame {
         setLayout(new GridLayout(2, 1));
     }
 
-    private void GUIBody(ArrayList<Product> productList) throws ParseException {
+    private void GUIBody() throws ParseException {
+        // Create table model with column names and 0 rows initially
+        DefaultTableModel tableModel = new DefaultTableModel(
+                new String[]{"ID", "Name", "Category", "Price", "Info"}, 0);
 
         // Create JTable with the populated table model
-        JTable productTable = new JTable(getTable(productList)) {
+        productTable = new JTable(tableModel) {
             final Class[] types = new Class[]{String.class, String.class, String.class, Double.class, String.class};
             final boolean[] canEdit = new boolean[]{false, false, false, false, false};
 
@@ -59,6 +81,17 @@ public class WestminsterShoppingCenter extends JFrame {
                 return canEdit[columnIndex];
             }
         };
+        loadDataIntoTable(0);
+        productTable.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
+                try {
+                    selectTableRow(evt);
+
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
 
         // Create scroll pane for table
         JScrollPane productScrollPane = new JScrollPane();
@@ -82,11 +115,16 @@ public class WestminsterShoppingCenter extends JFrame {
 
         JLabel productCategoryLabel = new JLabel("Select product category");
 
-        JComboBox<String> productCategoryComboBox = new JComboBox<>(new DefaultComboBoxModel<>(
+        productCategoryComboBox = new JComboBox<>(new DefaultComboBoxModel<>(
                 new String[] { "All", "Electronics", "Clothing" }));
         productCategoryComboBox.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                productCategoryComboBoxActionPerformed(evt);
+                try {
+                    productCategoryComboBoxActionPerformed(evt);
+
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
 
@@ -105,9 +143,9 @@ public class WestminsterShoppingCenter extends JFrame {
 
         JLabel nameLabel = new JLabel("Name:");
 
-        JLabel sizeOrBrandLabel = new JLabel(".");
+        sizeOrBrandLabel = new JLabel(".");
 
-        JLabel colourOrWarrantyLabel = new JLabel(".");
+        colourOrWarrantyLabel = new JLabel(".");
 
         JLabel availableItemsLabel = new JLabel("Items Available:");
 
@@ -118,17 +156,17 @@ public class WestminsterShoppingCenter extends JFrame {
             }
         });
 
-        JLabel productIdShowLabel = new JLabel("1");
+        productIdShowLabel = new JLabel("1");
 
-        JLabel categoryShowLabel = new JLabel("2");
+        categoryShowLabel = new JLabel("2");
 
-        JLabel nameShowLabel = new JLabel("3");
+        nameShowLabel = new JLabel("3");
 
-        JLabel sizeOrBrandShowLabel = new JLabel("4");
+        sizeOrBrandShowLabel = new JLabel("4");
 
-        JLabel colourOrWarrantyShowLabel = new JLabel("5");
+        colourOrWarrantyShowLabel = new JLabel("5");
 
-        JLabel availableItemsShowLabel = new JLabel("6");
+        availableItemsShowLabel = new JLabel("6");
 
         JSeparator separator = new JSeparator();
 
@@ -226,10 +264,18 @@ public class WestminsterShoppingCenter extends JFrame {
         );
     }
 
-    private DefaultTableModel getTable(ArrayList<Product> productList) throws ParseException {
-        // Create table model with column names and 0 rows initially
-        DefaultTableModel tableModel = new DefaultTableModel(
-                new String[]{"ID", "Name", "Category", "Price", "Info"}, 0);
+    private void loadDataIntoTable(int category) throws ParseException {
+        // Category
+        // 0 = all
+        // 1 = Electronics
+        // 2 = Clothing
+
+        // Get table model
+        DefaultTableModel tableModel = (DefaultTableModel) productTable.getModel();
+
+        for (int i = tableModel.getRowCount() - 1; i >= 0; i--) {
+            tableModel.removeRow(i);
+        }
 
         // Populate table model with product data
         for (Product product : productList) {
@@ -257,21 +303,84 @@ public class WestminsterShoppingCenter extends JFrame {
                     product.getPrice(),
                     productInfo
             };
-            tableModel.addRow(rowData);
+
+            switch (category) {
+                case 0:
+                    tableModel.addRow(rowData);
+                    break;
+
+                case 1:
+                    if(product.getClass().getName().substring(product.getClass().getName()
+                            .lastIndexOf('.')+1).equalsIgnoreCase("electronics")) {
+                        tableModel.addRow(rowData);
+                    }
+                    break;
+
+                case 2:
+                    if(product.getClass().getName().substring(product.getClass().getName()
+                            .lastIndexOf('.')+1).equalsIgnoreCase("clothing")) {
+                        tableModel.addRow(rowData);
+                    }
+                    break;
+            }
         }
-
-        return tableModel;
     }
 
-    private void shoppingCartActionPerformed(ActionEvent evt) {
+    private void selectTableRow(MouseEvent e) throws ParseException {
+        DefaultTableModel model = (DefaultTableModel) productTable.getModel();
+        int selectedRow = productTable.getSelectedRow();
+
+        productIdShowLabel.setText(model.getValueAt(selectedRow, 0).toString());
+        categoryShowLabel.setText(model.getValueAt(selectedRow, 1).toString());
+        nameShowLabel.setText(model.getValueAt(selectedRow, 2).toString());
+
+        for (Product p : productList) {
+            if(p.getProductId().equalsIgnoreCase(model.getValueAt(selectedRow, 0).toString().toLowerCase())) {
+                if(model.getValueAt(selectedRow, 2).toString().equalsIgnoreCase("electronics")) {
+                    Electronics ele = (Electronics) p;
+                    sizeOrBrandLabel.setText("Brand:");
+                    sizeOrBrandShowLabel.setText(ele.getBrand());
+                    colourOrWarrantyLabel.setText("Warranty:");
+                    colourOrWarrantyShowLabel.setText(new SimpleDateFormat("yyyy-MM-dd").
+                            format(new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy", Locale.ENGLISH).
+                                    parse(String.valueOf(ele.getWarranty()))));
+                    availableItemsShowLabel.setText(String.valueOf(ele.getAvailableItems()));
+
+                } else {
+                    Clothing c = (Clothing) p;
+                    sizeOrBrandLabel.setText("Size:");
+                    sizeOrBrandShowLabel.setText(c.getSize());
+                    colourOrWarrantyLabel.setText("Colour:");
+                    colourOrWarrantyShowLabel.setText(c.getColour());
+                    availableItemsShowLabel.setText(String.valueOf(c.getAvailableItems()));
+                }
+            }
+        }
+    }
+
+    private void productCategoryComboBoxActionPerformed(ActionEvent e) throws ParseException {
+        if(e.getSource() == productCategoryComboBox) {
+            switch (Objects.requireNonNull(productCategoryComboBox.getSelectedItem()).toString().toLowerCase()) {
+                case "all":
+                    loadDataIntoTable(0);
+                    break;
+
+                case "electronics":
+                    loadDataIntoTable(1);
+                    break;
+
+                case "clothing":
+                    loadDataIntoTable(2);
+                    break;
+            }
+        }
+    }
+
+    private void shoppingCartActionPerformed(ActionEvent e) {
         // TODO add your handling code here:
     }
 
-    private void productCategoryComboBoxActionPerformed(ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void addShoppingCartButtonActionPerformed(ActionEvent evt) {
+    private void addShoppingCartButtonActionPerformed(ActionEvent e) {
         // TODO add your handling code here:
     }
 }
