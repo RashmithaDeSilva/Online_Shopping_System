@@ -14,27 +14,6 @@ import java.util.Vector;
 
 public class WestminsterShoppingCenter extends JFrame {
 
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox<String> productCategoryComboBox;
-    private javax.swing.JLabel productCategoryLabel;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
-    private javax.swing.JScrollPane productScrollPane;
-    private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTable productTable;
-
     public WestminsterShoppingCenter(ArrayList<Product> productList) {
         // Set Window
         setWindow(700,850,"Westminster Skin Consultation Manager");
@@ -58,52 +37,23 @@ public class WestminsterShoppingCenter extends JFrame {
     }
 
     private void GUIBody(ArrayList<Product> productList) throws ParseException {
-        productScrollPane = new JScrollPane();
-        productTable = new JTable();
-        productCategoryLabel = new JLabel();
-        productCategoryComboBox = new JComboBox<>();
-        jButton1 = new JButton();
-        jSeparator1 = new JSeparator();
-        jLabel2 = new JLabel();
-        jLabel3 = new JLabel();
-        jLabel4 = new JLabel();
-        jLabel5 = new JLabel();
-        jLabel6 = new JLabel();
-        jLabel7 = new JLabel();
-        jLabel8 = new JLabel();
-        jButton2 = new JButton();
-        jLabel9 = new JLabel();
-        jLabel10 = new JLabel();
-        jLabel11 = new JLabel();
-        jLabel12 = new JLabel();
-        jLabel13 = new JLabel();
-        jLabel14 = new JLabel();
-
-        productTable.setModel(new DefaultTableModel(
+        JTable productTable = new JTable(new DefaultTableModel(
                 new Object [][] {
-                        {null, null, null, null, null},
-                        {null, null, null, null, null},
-                        {null, null, null, null, null},
-                        {null, null, null, null, null},
-                        {null, null, null, null, null}
+                    {null, null, null, null, null},
+                    {null, null, null, null, null},
+                    {null, null, null, null, null},
+                    {null, null, null, null, null},
+                    {null, null, null, null, null}
                 },
-                new String [] {"ID", "Name", "Category", "Price", "Info"}
-        ) );//{
-//            Class[] types = new Class [] {
-//                    java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.String.class
-//            };
-//            boolean[] canEdit = new boolean [] {
-//                    false, false, false, false, false
-//            };
-//
-//            public Class getColumnClass(int columnIndex) {
-//                return types [columnIndex];
-//            }
-//
-//            public boolean isCellEditable(int rowIndex, int columnIndex) {
-//                return canEdit [columnIndex];
-//            }
-//        });
+                new String [] {"ID", "Name", "Category", "Price", "Info"})
+            {
+                final Class[] types = new Class [] { String.class, String.class, String.class, Double.class, String.class };
+                final boolean[] canEdit = new boolean [] { false, false, false, false, false };
+                public Class getColumnClass(int columnIndex) { return types [columnIndex]; }
+                public boolean isCellEditable(int rowIndex, int columnIndex) { return canEdit [columnIndex]; }
+            });
+
+        JScrollPane productScrollPane = new JScrollPane();
         productScrollPane.setViewportView(productTable);
         if (productTable.getColumnModel().getColumnCount() > 0) {
             productTable.getColumnModel().getColumn(0).setResizable(false);
@@ -122,158 +72,161 @@ public class WestminsterShoppingCenter extends JFrame {
             productTable.getColumnModel().getColumn(4).setPreferredWidth(150);
         }
 
-        productCategoryLabel.setText("Select product category");
+        JLabel productCategoryLabel = new JLabel("Select product category");
 
-        productCategoryComboBox.setModel(new DefaultComboBoxModel<>(new String[] { "All", "Electronics", "Clothing" }));
+        JComboBox<String> productCategoryComboBox = new JComboBox<>(new DefaultComboBoxModel<>(
+                new String[] { "All", "Electronics", "Clothing" }));
         productCategoryComboBox.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
+                productCategoryComboBoxActionPerformed(evt);
             }
         });
 
-        jButton1.setText("Shopping cart");
-        jButton1.addActionListener(new ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+        JButton shoppingCartButton = new JButton("Shopping cart");
+        shoppingCartButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                shoppingCartActionPerformed(evt);
             }
         });
 
-        jLabel2.setText("Scelected Product - Details");
+        JLabel selectedProductDetailsLabel = new JLabel("Selected Product - Details");
 
-        jLabel3.setText("Product ID: ");
+        JLabel productIdLabel = new JLabel("Product ID: ");
 
-        jLabel4.setText("Category:");
+        JLabel categoryLabel = new JLabel("Category:");
 
-        jLabel5.setText(".");
+        JLabel nameLabel = new JLabel("Name:");
 
-        jLabel6.setText("Name:");
+        JLabel sizeOrBrandLabel = new JLabel(".");
 
-        jLabel7.setText("Items Avalabel:");
+        JLabel colourOrWarrantyLabel = new JLabel(".");
 
-        jLabel8.setText(".");
+        JLabel availableItemsLabel = new JLabel("Items Available:");
 
-        jButton2.setText("Add to Shoping Cart");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+        JButton addShoppingCartButton = new JButton("Add to Shopping Cart");
+        addShoppingCartButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                addShoppingCartButtonActionPerformed(evt);
             }
         });
 
-        jLabel9.setText(".");
+        JLabel productIdShowLabel = new JLabel("1");
 
-        jLabel10.setText(".");
+        JLabel categoryShowLabel = new JLabel("2");
 
-        jLabel11.setText(".");
+        JLabel nameShowLabel = new JLabel("3");
 
-        jLabel12.setText(".");
+        JLabel sizeOrBrandShowLabel = new JLabel("4");
 
-        jLabel13.setText(".");
+        JLabel colourOrWarrantyShowLabel = new JLabel("5");
 
-        jLabel14.setText(".");
+        JLabel availableItemsShowLabel = new JLabel("6");
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        JSeparator separator = new JSeparator();
+
+        GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                         .addGroup(layout.createSequentialGroup()
                                                 .addContainerGap()
-                                                .addComponent(jSeparator1))
+                                                .addComponent(separator))
                                         .addGroup(layout.createSequentialGroup()
                                                 .addGap(29, 29, 29)
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                                         .addGroup(layout.createSequentialGroup()
                                                                 .addGap(54, 54, 54)
-                                                                .addComponent(productCategoryLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addComponent(productCategoryLabel, GroupLayout.PREFERRED_SIZE, 176, GroupLayout.PREFERRED_SIZE)
                                                                 .addGap(18, 18, 18)
-                                                                .addComponent(productCategoryComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                                .addComponent(jButton1)
-                                                                .addComponent(productScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 638, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                                .addComponent(productCategoryComboBox, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE))
+                                                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                                                                .addComponent(shoppingCartButton)
+                                                                .addComponent(productScrollPane, GroupLayout.PREFERRED_SIZE, 638, GroupLayout.PREFERRED_SIZE)))
                                                 .addGap(0, 27, Short.MAX_VALUE))
                                         .addGroup(layout.createSequentialGroup()
                                                 .addGap(31, 31, 31)
-                                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                .addComponent(selectedProductDetailsLabel, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE)))
                                 .addContainerGap())
                         .addGroup(layout.createSequentialGroup()
                                 .addGap(44, 44, 44)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 84, Short.MAX_VALUE)
-                                        .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(availableItemsLabel, GroupLayout.DEFAULT_SIZE, 84, Short.MAX_VALUE)
+                                        .addComponent(productIdLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(categoryLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(nameLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(sizeOrBrandLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(colourOrWarrantyLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(32, 32, 32)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                         .addGroup(layout.createSequentialGroup()
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                                        .addComponent(productIdShowLabel, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(categoryShowLabel, GroupLayout.PREFERRED_SIZE, 148, GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(nameShowLabel, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(sizeOrBrandShowLabel, GroupLayout.PREFERRED_SIZE, 132, GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(colourOrWarrantyShowLabel, GroupLayout.PREFERRED_SIZE, 163, GroupLayout.PREFERRED_SIZE))
+                                                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                         .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(jButton2)
+                                                .addComponent(availableItemsShowLabel, GroupLayout.PREFERRED_SIZE, 102, GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(addShoppingCartButton)
                                                 .addGap(39, 39, 39))))
         );
         layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
                                 .addGap(26, 26, 26)
-                                .addComponent(jButton1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(productCategoryComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(shoppingCartButton)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                        .addComponent(productCategoryComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                                         .addComponent(productCategoryLabel))
                                 .addGap(28, 28, 28)
-                                .addComponent(productScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 404, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(productScrollPane, GroupLayout.PREFERRED_SIZE, 404, GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(separator, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                                 .addGap(32, 32, 32)
-                                .addComponent(jLabel2)
+                                .addComponent(selectedProductDetailsLabel)
                                 .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabel3)
-                                        .addComponent(jLabel9))
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                        .addComponent(productIdLabel)
+                                        .addComponent(productIdShowLabel))
                                 .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabel4)
-                                        .addComponent(jLabel10))
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                        .addComponent(categoryLabel)
+                                        .addComponent(categoryShowLabel))
                                 .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabel6)
-                                        .addComponent(jLabel11))
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                        .addComponent(nameLabel)
+                                        .addComponent(nameShowLabel))
                                 .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabel5)
-                                        .addComponent(jLabel12))
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                        .addComponent(sizeOrBrandLabel)
+                                        .addComponent(sizeOrBrandShowLabel))
                                 .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabel8)
-                                        .addComponent(jLabel13))
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                        .addComponent(colourOrWarrantyLabel)
+                                        .addComponent(colourOrWarrantyShowLabel))
                                 .addGap(15, 15, 15)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabel7)
-                                        .addComponent(jLabel14)
-                                        .addComponent(jButton2))
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                        .addComponent(availableItemsLabel)
+                                        .addComponent(availableItemsShowLabel)
+                                        .addComponent(addShoppingCartButton))
                                 .addContainerGap(20, Short.MAX_VALUE))
         );
     }
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
+    private void shoppingCartActionPerformed(ActionEvent evt) {
         // TODO add your handling code here:
     }
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {
+    private void productCategoryComboBoxActionPerformed(ActionEvent evt) {
         // TODO add your handling code here:
     }
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
+    private void addShoppingCartButtonActionPerformed(ActionEvent evt) {
         // TODO add your handling code here:
     }
 
