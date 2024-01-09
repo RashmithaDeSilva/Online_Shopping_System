@@ -200,11 +200,11 @@ public class WestminsterShoppingManager implements ShoppingManager {
                     break;
 
                 case 2:
-                    clothing = new Clothing(getProductDetails() ,0, null);
+                    clothing = new Clothing(getProductDetails() ,null, null);
 
                     while (true) {
-                        double size = getDoubleInput("Size > ");
-                        if(size > 0) {
+                        String size = getStrInput("Size > ");
+                        if(size != null && !size.isEmpty()) {
                             clothing.setSize(size);
                             break;
 
@@ -379,7 +379,7 @@ public class WestminsterShoppingManager implements ShoppingManager {
                    break;
 
                case 5:
-                   new WestminsterShoppingCenter().setVisible(true);
+                   new WestminsterShoppingCenter(productList).setVisible(true);
                    break;
 
                default:
@@ -396,11 +396,11 @@ public class WestminsterShoppingManager implements ShoppingManager {
         productList.add(new Electronics("2", "aaaaa", 100, 50,
                 "djhhsjdh", new SimpleDateFormat("yyyy-MM-dd").parse("2023-09-09")));
         productList.add(new Clothing("1", "aaaaa", 100, 50,
-                25, "dssdsd"));
+                "S", "dssdsd"));
         productList.add(new Electronics("5", "aaaaa", 100, 50,
                 "djhhsjdh", new SimpleDateFormat("yyyy-MM-dd").parse("2023-09-09")));
         productList.add(new Clothing("3", "aaaaa", 100, 50,
-                25, "hcbjsdb"));
+                "M", "hcbjsdb"));
 
 
     }
