@@ -143,9 +143,9 @@ public class WestminsterShoppingCenter extends JFrame {
 
         JLabel nameLabel = new JLabel("Name:");
 
-        sizeOrBrandLabel = new JLabel(".");
+        sizeOrBrandLabel = new JLabel("");
 
-        colourOrWarrantyLabel = new JLabel(".");
+        colourOrWarrantyLabel = new JLabel("");
 
         JLabel availableItemsLabel = new JLabel("Items Available:");
 
@@ -156,17 +156,17 @@ public class WestminsterShoppingCenter extends JFrame {
             }
         });
 
-        productIdShowLabel = new JLabel("1");
+        productIdShowLabel = new JLabel("");
 
-        categoryShowLabel = new JLabel("2");
+        categoryShowLabel = new JLabel("");
 
-        nameShowLabel = new JLabel("3");
+        nameShowLabel = new JLabel("");
 
-        sizeOrBrandShowLabel = new JLabel("4");
+        sizeOrBrandShowLabel = new JLabel("");
 
-        colourOrWarrantyShowLabel = new JLabel("5");
+        colourOrWarrantyShowLabel = new JLabel("");
 
-        availableItemsShowLabel = new JLabel("6");
+        availableItemsShowLabel = new JLabel("");
 
         JSeparator separator = new JSeparator();
 
@@ -377,10 +377,17 @@ public class WestminsterShoppingCenter extends JFrame {
     }
 
     private void shoppingCartActionPerformed(ActionEvent e) {
-        // TODO add your handling code here:
+        
     }
 
     private void addShoppingCartButtonActionPerformed(ActionEvent e) {
-        // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) productTable.getModel();
+        int selectedRow = productTable.getSelectedRow();
+
+        for (Product p : productList) {
+            if(model.getValueAt(selectedRow, 0).toString().equalsIgnoreCase(p.getProductId().toLowerCase())) {
+                productCartList.add(p);
+            }
+        }
     }
 }
