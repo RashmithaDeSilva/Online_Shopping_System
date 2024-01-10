@@ -36,6 +36,7 @@ public class WestminsterShoppingCenter extends JFrame {
     private static ArrayList<Product> productList;
     private static ArrayList<Product> productCartList = new ArrayList<>();
     private User user;
+    private ShoppingCart cart;
 
 
     public WestminsterShoppingCenter(ArrayList<Product> productList) {
@@ -173,7 +174,12 @@ public class WestminsterShoppingCenter extends JFrame {
         JButton addShoppingCartBtn = new JButton("Add to Shopping Cart");
         addShoppingCartBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                addShoppingCartButtonActionPerformed(evt);
+                try {
+                    addShoppingCartButtonActionPerformed(evt);
+
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
 
@@ -309,10 +315,15 @@ public class WestminsterShoppingCenter extends JFrame {
     }
 
     private void shoppingCartActionPerformed(ActionEvent e) {
-        new ShoppingCart(productCartList).setVisible(true);
+        if(user != null) {
+            cart = new ShoppingCart(productCartList, user.isFirstPurchase());
+        } else  {
+            cart = new ShoppingCart(productCartList);
+        }
+        cart.setVisible(true);
     }
 
-    private void addShoppingCartButtonActionPerformed(ActionEvent e) {
+    private void addShoppingCartButtonActionPerformed(ActionEvent e) throws ParseException {
         DefaultTableModel model = (DefaultTableModel) productTbl.getModel();
         int selectedRow = productTbl.getSelectedRow();
 
@@ -330,6 +341,9 @@ public class WestminsterShoppingCenter extends JFrame {
 
                     sizeOrBrandLbl.setText("");
                     colourOrWarrantyLbl.setText("");
+
+                    cart.refreshTable();
+                    loadDataIntoTable(productCategoryCmBx.getSelectedIndex());
                 }
             }
         }
