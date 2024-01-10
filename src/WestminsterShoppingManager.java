@@ -406,7 +406,7 @@ public class WestminsterShoppingManager implements ShoppingManager {
 
                case 5:
                    new LoginOrSingInPage().setVisible(true);
-                   new WestminsterShoppingCenter(productList).setVisible(true);
+//                   new WestminsterShoppingCenter(productList).setVisible(true);
                    break;
 
                default:
