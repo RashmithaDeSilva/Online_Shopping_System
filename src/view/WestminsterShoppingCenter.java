@@ -326,26 +326,46 @@ public class WestminsterShoppingCenter extends JFrame {
     private void addShoppingCartButtonActionPerformed(ActionEvent e) throws ParseException {
         DefaultTableModel model = (DefaultTableModel) productTbl.getModel();
         int selectedRow = productTbl.getSelectedRow();
+        boolean alreadyAdded = false;
 
         if(selectedRow > -1) {
+            for (Product pp : productCartList) {
+                if(model.getValueAt(selectedRow, 0).toString().equalsIgnoreCase(
+                        pp.getProductId().toLowerCase())) {
+                    alreadyAdded = true;
+                    break;
+                }
+            }
+
             for (Product p : productList) {
-                if(model.getValueAt(selectedRow, 0).toString().equalsIgnoreCase(p.getProductId().toLowerCase())) {
-                    productCartList.add(p);
+                if(!alreadyAdded) {
+                    if(model.getValueAt(selectedRow, 0).toString().equalsIgnoreCase(
+                            p.getProductId().toLowerCase())) {
+                        productCartList.add(p);
 
-                    productIdShowLbl.setText("");
-                    categoryShowLbl.setText("");
-                    nameShowLbl.setText("");
-                    sizeOrBrandShowLbl.setText("");
-                    colourOrWarrantyShowLbl.setText("");
-                    availableItemsShowLbl.setText("");
+                        productIdShowLbl.setText("");
+                        categoryShowLbl.setText("");
+                        nameShowLbl.setText("");
+                        sizeOrBrandShowLbl.setText("");
+                        colourOrWarrantyShowLbl.setText("");
+                        availableItemsShowLbl.setText("");
 
-                    sizeOrBrandLbl.setText("");
-                    colourOrWarrantyLbl.setText("");
+                        sizeOrBrandLbl.setText("");
+                        colourOrWarrantyLbl.setText("");
 
-                    cart.refreshTable();
-                    loadDataIntoTable(productCategoryCmBx.getSelectedIndex());
+                        cart.refreshTable();
+                        loadDataIntoTable(productCategoryCmBx.getSelectedIndex());
+                    }
+
+                } else {
+                    showWarningDialog("Warning", "This item is already added!");
+                    break;
                 }
             }
         }
+    }
+
+    private static void showWarningDialog(String title, String message) {
+        JOptionPane.showMessageDialog(null, message, title, JOptionPane.WARNING_MESSAGE);
     }
 }
