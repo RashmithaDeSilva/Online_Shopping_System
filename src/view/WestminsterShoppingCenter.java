@@ -353,7 +353,9 @@ public class WestminsterShoppingCenter extends JFrame {
                         sizeOrBrandLbl.setText("");
                         colourOrWarrantyLbl.setText("");
 
-                        cart.refreshTable();
+                        if(cart != null) {
+                            cart.refreshTable();
+                        }
                         loadDataIntoTable(productCategoryCmBx.getSelectedIndex());
                     }
 
