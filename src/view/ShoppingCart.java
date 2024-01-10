@@ -1,5 +1,7 @@
 package view;
 
+import models.Clothing;
+import models.Electronics;
 import models.Product;
 
 import javax.swing.*;
@@ -8,11 +10,18 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class ShoppingCart extends JFrame {
+    JTable cartTbl;
+    private static ArrayList<Product> productCartList = new ArrayList<>();
+
 
     public ShoppingCart(ArrayList<Product> productCartList) {
+        ShoppingCart.productCartList = productCartList;
+
         // Set Window
         setWindow(700,480,"Shopping Cart");
 
@@ -36,8 +45,13 @@ public class ShoppingCart extends JFrame {
 
     private void GUIBody(ArrayList<Product> productList) throws ParseException {
 
+        // Create table model with column names and 0 rows initially
+        DefaultTableModel tableModel = new DefaultTableModel(
+                new String[]{"Product", "Quantity", "Price"}, 0);
+
+
         JScrollPane jScrollPane1 = new JScrollPane();
-        JTable jTable1 = new JTable();
+
         JLabel jLabel1 = new JLabel();
         JLabel jLabel2 = new JLabel();
         JLabel jLabel3 = new JLabel();
@@ -47,19 +61,16 @@ public class ShoppingCart extends JFrame {
         JLabel jLabel7 = new JLabel();
         JLabel jLabel8 = new JLabel();
 
-        jTable1.setModel(new DefaultTableModel(
-                new Object [][] {
-                        {null, null, null},
-                        {null, null, null},
-                        {null, null, null},
-                        {null, null, null}
-                },
-                new String [] { "Product", "Quantity", "Price" }
-        ) {
+        // Create JTable with the populated table model
+
+        cartTbl = new JTable(tableModel) {
             Class[] types = new Class[] { String.class, Integer.class, String.class };
-            public Class getColumnClass(int columnIndex) { return types [columnIndex]; }
-        });
-        jScrollPane1.setViewportView(jTable1);
+            boolean[] canEdit = new boolean [] {false, true, false};
+            public Class getColumnClass(int columnIndex) {return types [columnIndex];}
+            public boolean isCellEditable(int rowIndex, int columnIndex) {return canEdit [columnIndex];}
+        };
+        loadDataIntoTable();
+        jScrollPane1.setViewportView(cartTbl);
 
         jLabel1.setText("Total");
 
@@ -69,13 +80,13 @@ public class ShoppingCart extends JFrame {
 
         jLabel4.setText("Final Total");
 
-        jLabel5.setText("jLabel5");
+        jLabel5.setText("");
 
-        jLabel6.setText("jLabel6");
+        jLabel6.setText("");
 
-        jLabel7.setText("jLabel7");
+        jLabel7.setText("");
 
-        jLabel8.setText("jLabel8");
+        jLabel8.setText("");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -98,4 +109,40 @@ public class ShoppingCart extends JFrame {
                 .addGap(18, 18, 18).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(jLabel4).addComponent(jLabel8)).addContainerGap(27, Short.MAX_VALUE))
         );
     }
+
+    private void loadDataIntoTable() throws ParseException {
+
+        // Get table model
+        DefaultTableModel tableModel = (DefaultTableModel) cartTbl.getModel();
+
+        for (int i = tableModel.getRowCount() - 1; i >= 0; i--) {
+            tableModel.removeRow(i);
+        }
+
+        // Populate table model with product data
+        for (Product product : productCartList) {
+
+            String productInfo;
+
+            if (product.getClass().getName().substring(product.getClass().getName().
+                    lastIndexOf('.')+1).equalsIgnoreCase("electronics")) {
+                Electronics e = (Electronics) product;
+                productInfo = e.getBrand() + " " + new SimpleDateFormat("yyyy-MM-dd").
+                        format(new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy",
+                                Locale.ENGLISH).parse(String.valueOf(e.getWarranty())));
+            } else {
+                Clothing c = (Clothing) product;
+                productInfo = c.getSize() + " " + c.getColour();
+            }
+
+            Object[] rowData = {
+                    product.getProductId()  + "\n" + product.getProductName() + "\n" + productInfo,
+                    1,
+                    product.getPrice()
+            };
+
+            tableModel.addRow(rowData);
+        }
+    }
+
 }

@@ -3,6 +3,7 @@ package view;
 import models.Product;
 import models.Electronics;
 import models.Clothing;
+import models.User;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -32,12 +33,32 @@ public class WestminsterShoppingCenter extends JFrame {
     JLabel colourOrWarrantyLbl;
 
 
-    ArrayList<Product> productList;
-    ArrayList<Product> productCartList = new ArrayList<>();
+    private static ArrayList<Product> productList;
+    private static ArrayList<Product> productCartList = new ArrayList<>();
+    private User user;
+
 
     public WestminsterShoppingCenter(ArrayList<Product> productList) {
         // Set product list
         this.productList = productList;
+
+        // Set Window
+        setWindow(700,680,"Westminster Shopping Center");
+
+        // Set Body
+        try {
+            GUIBody();
+
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public WestminsterShoppingCenter(ArrayList<Product> productList, User user) {
+        // Set product list
+        WestminsterShoppingCenter.productList = productList;
+        this.user = user;
+        productCartList = user.getShoppingCart().getProductList();
 
         // Set Window
         setWindow(700,680,"Westminster Shopping Center");
@@ -61,13 +82,14 @@ public class WestminsterShoppingCenter extends JFrame {
     }
 
     private void GUIBody() throws ParseException {
+
         // Create table model with column names and 0 rows initially
         DefaultTableModel tableModel = new DefaultTableModel(
                 new String[]{"ID", "Name", "Category", "Price", "Info"}, 0);
 
         // Create JTable with the populated table model
         productTbl = new JTable(tableModel) {
-            final Class[] types = new Class[]{String.class, String.class, String.class, Double.class, String.class};
+            final Class[] types = new Class[]{String.class, String.class, String.class, String.class, String.class};
             final boolean[] canEdit = new boolean[]{false, false, false, false, false};
 
             @Override
@@ -196,13 +218,12 @@ public class WestminsterShoppingCenter extends JFrame {
             if (product.getClass().getName().substring(product.getClass().getName().
                     lastIndexOf('.')+1).equalsIgnoreCase("electronics")) {
                 Electronics e = (Electronics) product;
-                productInfo = "Brand name: " + e.getBrand() + "\nWarranty: " +
-                        new SimpleDateFormat("yyyy-MM-dd").format(new SimpleDateFormat(
-                                "E MMM dd HH:mm:ss z yyyy", Locale.ENGLISH).parse(
-                                String.valueOf(e.getWarranty())));
+                productInfo = e.getBrand() + " " + new SimpleDateFormat("yyyy-MM-dd").
+                        format(new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy",
+                                Locale.ENGLISH).parse(String.valueOf(e.getWarranty())));
             } else {
                 Clothing c = (Clothing) product;
-                productInfo = "Size: " + c.getSize() + "\nColour: " + c.getColour();
+                productInfo = c.getSize() + " " + c.getColour();
             }
 
             Object[] rowData = {
@@ -299,6 +320,16 @@ public class WestminsterShoppingCenter extends JFrame {
             for (Product p : productList) {
                 if(model.getValueAt(selectedRow, 0).toString().equalsIgnoreCase(p.getProductId().toLowerCase())) {
                     productCartList.add(p);
+
+                    productIdShowLbl.setText("");
+                    categoryShowLbl.setText("");
+                    nameShowLbl.setText("");
+                    sizeOrBrandShowLbl.setText("");
+                    colourOrWarrantyShowLbl.setText("");
+                    availableItemsShowLbl.setText("");
+
+                    sizeOrBrandLbl.setText("");
+                    colourOrWarrantyLbl.setText("");
                 }
             }
         }

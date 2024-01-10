@@ -1,11 +1,16 @@
 package models;
 
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class ShoppingCart {
+public class ShoppingCart implements Serializable {
     private ArrayList<Product> productList;
 
+
+    public ShoppingCart() {
+        productList = new ArrayList<>();
+    }
 
     public void addProduct(Product product) {
         productList.add(product);

@@ -347,7 +347,7 @@ public class WestminsterShoppingManager implements ShoppingManager {
                     System.out.println("Successfully loaded data from file: " + saveFileName + ".dat");
                 }
             } catch (IOException | ClassNotFoundException e) {
-                System.out.println("Error loading product list: " + e.getMessage());
+                System.out.println("Error loading: " + e.getMessage());
             }
         } else {
             System.out.println("File '" + saveFileName + ".dat' does not exist in the current working directory. " +

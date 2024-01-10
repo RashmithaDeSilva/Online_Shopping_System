@@ -1,3 +1,4 @@
+import models.ShoppingCart;
 import models.User;
 import view.WestminsterShoppingCenter;
 
@@ -69,9 +70,9 @@ public class LoginOrSingInPage extends JFrame {
 
         conformPwordLbt.setText("Conform Password");
 
-        uNameTxt.setText("jTextField1");
+        uNameTxt.setText("");
 
-        newUnameTxt.setText("jTextField3");
+        newUnameTxt.setText("");
 
         loginLbl.setText("Login");
 
@@ -108,7 +109,7 @@ public class LoginOrSingInPage extends JFrame {
                 for (User u : wsm.getUserList()) {
                     if(u.getUserName().equalsIgnoreCase(name.toLowerCase()) &&
                             u.getPassword().equalsIgnoreCase(pass.toLowerCase())) {
-                        new WestminsterShoppingCenter(wsm.getProductList()).setVisible(true);
+                        new WestminsterShoppingCenter(wsm.getProductList(), u).setVisible(true);
                         invalideLogin = false;
                         setVisible(false);
                         break;
@@ -143,7 +144,7 @@ public class LoginOrSingInPage extends JFrame {
                 for (User u : wsm.getUserList()) {
                     if(!u.getUserName().equalsIgnoreCase(name.toLowerCase())) {
                         if(pass.equalsIgnoreCase(conPass.toLowerCase())) {
-                            wsm.addNewUser(new User(name, pass, false));
+                            wsm.addNewUser(new User(name, pass, new ShoppingCart(), false));
                             showMessageDialog("Information", "Successfully sing in you... " +
                                     "\nNow try to login");
 
@@ -158,7 +159,7 @@ public class LoginOrSingInPage extends JFrame {
 
             } else {
                 if(pass.equalsIgnoreCase(conPass.toLowerCase())) {
-                    wsm.addNewUser(new User(name, pass, false));
+                    wsm.addNewUser(new User(name, pass, new ShoppingCart(), false));
                     newUnameTxt.setText("");
                     newPwordTxt.setText("");
                     conformPwordTxt.setText("");
