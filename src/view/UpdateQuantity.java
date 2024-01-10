@@ -76,6 +76,7 @@ public class UpdateQuantity extends JFrame  {
                     product.setNeedItems(quantity);
                     shoppingCart.updateProductQuantity(product);
                     shoppingCart.refreshTable();
+                    setVisible(false);
 
                 } else {
                     showWarningDialog("Warning", "Invalid quantity!");
